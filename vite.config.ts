@@ -15,4 +15,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle libraries loaded only by some routes; late discovery re-optimizes deps and can
+    // leave the open preview with two React copies ("Cannot read properties of null (reading 'useState')").
+    optimizeDeps: { include: ["recharts", "sonner", "lucide-react"] },
+  },
 });

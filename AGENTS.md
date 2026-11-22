@@ -37,3 +37,4 @@ use the editor.
 - The FastAPI source remains external: do not provision a replacement database or auth service for this frontend-only integration.
 - Derive management forms from the attached backend's Pydantic schemas and permit only the fields accepted by each update endpoint to preserve request compatibility.
 - All visual tokens and responsive rules live in `src/styles.css`; media imports use registered asset pointers, except the small public favicon.
+- Pre-bundle route-only client libraries in `vite.config.ts` `optimizeDeps.include`; late dependency discovery can load duplicate React copies in an open preview.
