@@ -1,29 +1,43 @@
-# Welcome to your Lovable project
+# UFSCAchados — Frontend
 
-This project was built with [Lovable](https://lovable.dev).
+Interface em português do Sistema Inteligente de Gestão de Objetos Perdidos da UFSC.
 
-## Build with Lovable
+## Executar localmente
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
+npm install
 npm run dev
 ```
 
-## Built with
+Abra o endereço exibido no terminal. Para usar outra API, crie `.env.local` com:
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+```bash
+VITE_API_URL=http://127.0.0.1:8000
+```
+
+## Conectar ao FastAPI local
+
+O navegador só consegue chamar o FastAPI se o backend permitir a origem do frontend. Adicione no `main.py`:
+
+```python
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:8080", "http://127.0.0.1:5173", "http://127.0.0.1:8080"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+Sem conexão, o app entra em **Modo demonstração** com registros temporários desta sessão.
+
+## Rotas usadas
+
+- Mural: `/operacoes/vitrine`, `/objetos`
+- Publicação: `/objetos`, `/imagens`, `/operacoes/executar-match/{id}`
+- Retirada e devolução: `/reivindicacoes`, `/operacoes/conferir-reivindicacao/{id}`, `/operacoes/avaliar-reivindicacao`
+- Relatórios: `/relatorios/consulta-1-blocos`, `/relatorios/consulta-2-categorias-status`, `/relatorios/consulta-3-reivindicacoes` e seus gráficos
+- Busca inteligente: `/ia/buscar-objeto` (`GEMINI_API_KEY` precisa estar configurada no backend)
+- Gestão: todos os CRUDs de objetos, usuários, perfis, reivindicações, blocos, locais, catálogos, imagens, notificações e auditoria
+- Rotinas: `/operacoes/processar-vencimentos`, `/banco/inicializar`, `/banco/limpar`

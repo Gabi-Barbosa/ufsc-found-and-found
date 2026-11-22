@@ -28,3 +28,12 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep TanStack Start and its Vite bootstrap for routing and SSR; all content pages live under `src/routes` so the Lovable runtime remains supported.
+- Route components use `AppProvider` for the simulated session and object refresh; the profile selector is a demo, never an authentication boundary.
+- All FastAPI traffic goes through `src/services/api.ts`; fall back only on transport failures, never mask HTTP validation or server errors as successful demo writes.
+- Demo data is session-memory only and secrets are separate from public item records; browser demo data does not provide production secrecy.
+- The FastAPI source remains external: do not provision a replacement database or auth service for this frontend-only integration.
+- Derive management forms from the attached backend's Pydantic schemas and permit only the fields accepted by each update endpoint to preserve request compatibility.
+- All visual tokens and responsive rules live in `src/styles.css`; media imports use registered asset pointers, except the small public favicon.
